@@ -41,8 +41,8 @@ public class SmsReceiver extends BroadcastReceiver
                         timeStamp = msgs[i].getTimestampMillis();
                         msgBody = msgs[i].getMessageBody();
                         Log.d("1021",msgFrom + "," + msgBody + ","+ timeStamp);
-                        EventBus.getDefault().post(new SmsEvent(msgFrom, timeStamp, msgBody));
-                        LogService.startActionLog(context, timeStamp, msgBody);
+//                        EventBus.getDefault().post(new SmsEvent(msgFrom, timeStamp, msgBody));
+//                        LogService.startActionLog(context, timeStamp, msgBody);
                     }
                 }catch(Exception e){
                     e.printStackTrace();

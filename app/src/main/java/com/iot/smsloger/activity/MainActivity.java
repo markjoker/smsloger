@@ -15,7 +15,7 @@ import android.widget.SimpleAdapter;
 
 import com.iot.smsloger.R;
 import com.iot.smsloger.event.SmsEvent;
-import com.iot.smsloger.service.DMService;
+import com.iot.smsloger.service.SmsGuardService;
 import com.iot.smsloger.utils.Constant;
 
 import java.io.BufferedReader;
@@ -61,7 +61,8 @@ public class MainActivity extends Activity
         mConsole.setAdapter(mAdapter);
         initData();
         mAdapter.notifyDataSetChanged();
-        startService(new Intent(this, DMService.class));
+        mConsole.setSelection(mAdapter.getCount() - 1);
+        startService(new Intent(this, SmsGuardService.class));
     }
     
     private void initData()
@@ -166,6 +167,7 @@ public class MainActivity extends Activity
         map.put("content", mSdf.format(new Date(event.timeStamp)) + "#" + event.message);
         mData.add(map);
         mAdapter.notifyDataSetChanged();
+        mConsole.setSelection(mAdapter.getCount() - 1);
     }
     
     @Override
