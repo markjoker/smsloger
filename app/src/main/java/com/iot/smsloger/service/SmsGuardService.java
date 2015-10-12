@@ -31,11 +31,24 @@ public class SmsGuardService extends Service implements OnStateChangeListener
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
+        return START_STICKY;
+    }
+    
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
         mContentResolver = getContentResolver();
         mSmsObserver = new SmsObserver(this, mContentResolver, new Handler(), this);
         Uri smsUri = Uri.parse("content://sms");
         mContentResolver.registerContentObserver(smsUri, true, mSmsObserver);
-        return START_STICKY;
+    }
+    
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        mContentResolver.unregisterContentObserver(mSmsObserver);
     }
     
     private void notifyDataChange(Sms sms)

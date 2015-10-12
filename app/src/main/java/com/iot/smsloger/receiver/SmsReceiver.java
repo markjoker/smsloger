@@ -20,34 +20,37 @@ public class SmsReceiver extends BroadcastReceiver
     public void onReceive(Context context, Intent intent)
     {
         String action = intent.getAction();
-        Log.d("1021","onReceive:" + action);
-        if(Constant.IS_LISTEN_SMS)
+        Log.d("1021", "onReceive:" + action);
+        if (Constant.IS_LISTEN_SMS)
         {
             return;
         }
-        if (Telephony.Sms.Intents.SMS_DELIVER_ACTION.equals(action) || Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action)) {
+        if (Telephony.Sms.Intents.SMS_RECEIVED_ACTION.equals(action))
+        {
             Bundle bundle = intent.getExtras();
             SmsMessage[] msgs = null;
             String msgBody;
             String msgFrom;
             long timeStamp;
-            if (bundle != null){
-                try{
-                    Object[] pdus = (Object[]) bundle.get("pdus");
-                    msgs = new SmsMessage[pdus.length];
-                    for(int i=0; i<msgs.length; i++){
-                        msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                        msgFrom = msgs[i].getOriginatingAddress();
-                        timeStamp = msgs[i].getTimestampMillis();
-                        msgBody = msgs[i].getMessageBody();
-                        Log.d("1021",msgFrom + "," + msgBody + ","+ timeStamp);
+            if (bundle != null)
+            {
+                Object[] pdus = (Object[])bundle.get("pdus");
+                msgs = new SmsMessage[pdus.length];
+                for (int i = 0; i < msgs.length; i++)
+                {
+                    msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
+                    msgFrom = msgs[i].getOriginatingAddress();
+                    timeStamp = msgs[i].getTimestampMillis();
+                    msgBody = msgs[i].getMessageBody();
+                    Log.d("1021", msgFrom + "," + msgBody + "," + timeStamp);
 //                        EventBus.getDefault().post(new SmsEvent(msgFrom, timeStamp, msgBody));
 //                        LogService.startActionLog(context, timeStamp, msgBody);
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
                 }
             }
+        }
+        else if (Telephony.Sms.Intents.SMS_DELIVER_ACTION.equals(action))
+        {
+            
         }
     }
 }
